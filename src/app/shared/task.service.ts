@@ -1,60 +1,59 @@
-// https://todo-4d345-default-rtdb.europe-west1.firebasedatabase.app/
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
 export interface Task {
   title: string;
   id?: string;
   date?: string;
-}
-
-interface CraeteResponse {
-  name: string;
+  startDay: string;
+  endDay: string;
+  isCelebrity: boolean;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  static url =
-    'https://todo-4d345-default-rtdb.europe-west1.firebasedatabase.app/tasks';
+  constructor() {}
 
-  constructor(private http: HttpClient) {}
-
-  load(date: moment.Moment): Observable<any> {
-    return this.http
-      .get<Task[]>(`${TaskService.url}/${date.format('DD-MM-YYYY')}.json`)
-      .pipe(
-        map((tasks) => {
-          if (!tasks) {
-            return [];
-          }
-
-          return Object.keys(tasks).map((key: any) => {
-            return {
-              ...tasks[key],
-              id: key,
-            };
-          });
-        })
-      );
+  getStorageList() {
+    let list: any = localStorage.getItem('taskList');
+    return JSON.parse(list);
   }
 
-  create(task: Task): Observable<Task> {
-    return this.http
-      .post<CraeteResponse>(`${TaskService.url}/${task.date}.json`, task)
-      .pipe(
-        map((res) => {
-          return { ...task, id: res.name };
-        })
-      );
+  load(date: moment.Moment) {
+    let list = this.getStorageList();
+
+    let getList = list.filter((t: any) => {
+      return date >= t.startDay && date <= t.endDay;
+    });
+
+    return getList;
   }
 
-  remove(task: Task): Observable<any> {
-     return this.http.delete<void>(`${TaskService.url}/${task.date}/${task.id}.json`)
+  create(task: Task) {
+    let list = this.getStorageList();
+
+    localStorage.setItem('taskList', JSON.stringify([...list, task]));
+  }
+
+  remove(task: Task) {
+    let list = this.getStorageList();
+
+    let newList = list.filter((t: Task) => {
+      return t.id !== task.id;
+    });
+
+    localStorage.setItem('taskList', JSON.stringify(newList));
+  }
+
+  edit(task: Task) {
+    let list = this.getStorageList();
+
+    const newList = list.map((item: Task) => {
+      return item.id == task.id ? task : item;
+    });
+
+    localStorage.setItem('taskList', JSON.stringify(newList));
   }
 }

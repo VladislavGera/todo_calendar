@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../shared/date.service';
 
@@ -17,17 +17,18 @@ interface Week {
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarComponent implements OnInit {
   constructor(private dateService: DateService) {}
 
-  calendar!: Week[];
+  public calendar!: Week[];
 
   ngOnInit(): void {
     this.dateService.date.subscribe(this.generate.bind(this));
   }
 
-  generate(now: moment.Moment) {
+  public generate(now: moment.Moment) {
     const startDay = now.clone().startOf('month').startOf('week');
     const endDay = now.clone().endOf('month').endOf('week');
 
@@ -57,7 +58,7 @@ export class CalendarComponent implements OnInit {
     this.calendar = calendar;
   }
 
-  select(day: any){
-    this.dateService.changeDate(day)
+  public select(day: any) {
+    this.dateService.changeDate(day);
   }
 }

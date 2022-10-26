@@ -1,18 +1,32 @@
-section{
-    border: 1px solid black;
-    padding: 1rem;
+section {
+  border: 1px solid black;
+  padding: 1rem;
 
-
-    header{
-        margin-bottom: 1rem;
-    }
+  header {
+    margin-bottom: 1rem;
+  }
 }
 
-.task{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5rem 1rem;
-    border: 1px solid #ccc;
-    margin-bottom: .5rem;
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.example-form {
+  width: 100%;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.example-button-row {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
 }

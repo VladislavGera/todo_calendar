@@ -1,17 +1,33 @@
 <section>
   <header>
     Organizer:
-    <strong>{{ dateService.date | async | moment: "DD.MM.YYYY" }}</strong>
+    <strong>{{ dateService.date | async | moment: "DD.MM.YYYY" }} </strong>
+
     <hr />
   </header>
   <main>
     <ul *ngIf="tasks.length; else noTask">
       <li class="task" *ngFor="let task of tasks; let i = index">
         <span>
-          <strong> {{ i + 1 }} </strong>
-          {{ task.title  }}
+          <span *ngIf="task.isCelebrity"
+            ><mat-icon aria-hidden="false" fontIcon="celebration"></mat-icon>
+          </span>
+          {{ task.title }}
         </span>
-        <button class="btn btn-primary" (click)="remove(task)">delete</button>
+        <div>
+          <div class="example-button-row">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="getEditFild(task)"
+            >
+              edit
+            </button>
+            <button mat-raised-button color="warn" (click)="remove(task)">
+              delete
+            </button>
+          </div>
+        </div>
       </li>
     </ul>
     <ng-template #noTask>
@@ -20,15 +36,42 @@
   </main>
 
   <footer>
-    <form (ngSubmit)="submit()" [formGroup]="form">
-      <input type="text" formControlName="title" />
+    <form [formGroup]="form">
+      <div style="padding-bottom: 15px">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Task name</mat-label>
+          <input matInput placeholder="todo..." formControlName="title" />
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Start day</mat-label>
+          <input matInput type="date" formControlName="startDay" />
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>End day</mat-label>
+          <input matInput type="date" formControlName="endDay" />
+        </mat-form-field>
+        <mat-checkbox formControlName="isCelebrity">is celebrity</mat-checkbox>
+      </div>
       <button
+        (click)="submit()"
+        *ngIf="!isEdit; else buttonBlock"
         type="submit"
         class="btn btn-primary btn-block"
         [disabled]="form.invalid"
       >
-        button
+        Add event
       </button>
+
+      <ng-template #buttonBlock>
+        <button
+          (click)="edit()"
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="form.invalid"
+        >
+          Edit
+        </button>
+      </ng-template>
     </form>
   </footer>
 </section>

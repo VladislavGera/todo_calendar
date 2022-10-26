@@ -10,6 +10,9 @@ import { OranizerComponent } from './oranizer/oranizer.component';
 import { MomentPipe } from './shared/moment.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialExampleModule } from '../../src/material.module';
+
 
 @NgModule({
   declarations: [
@@ -20,11 +23,13 @@ import { HttpClientModule } from '@angular/common/http';
     MomentPipe
   ],
   imports: [
+    MaterialExampleModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
