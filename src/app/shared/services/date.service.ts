@@ -7,17 +7,23 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DateService {
   public date: BehaviorSubject<any> = new BehaviorSubject(moment());
+  public typeChange = 'month';
 
-  changeMonth(dir: number) {
-    const value = this.date.value.add(dir, 'month');
+  changeCalendarType(dir: number): void {
+    const value = this.date.value.add(dir, this.typeChange);
     this.date.next(value);
   }
 
-  changeDate(date: moment.Moment) {
+  dateSwitch(type: string): void {
+    this.typeChange = type;
+  }
+
+  changeDate(date: moment.Moment): void {
     const value = this.date.value.set({
       date: date.date(),
       month: date.month(),
     });
+
     this.date.next(value);
   }
 }

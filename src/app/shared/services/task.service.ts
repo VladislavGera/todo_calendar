@@ -5,8 +5,8 @@ export interface Task {
   title: string;
   id?: string;
   date?: string;
-  startDay: string;
-  endDay: string;
+  startDay: moment.Moment | string;
+  endDay: moment.Moment | string;
   isCelebrity: boolean;
 }
 
@@ -16,39 +16,39 @@ export interface Task {
 export class TaskService {
   constructor() {}
 
-  getStorageList() {
-    let list: any = localStorage.getItem('taskList');
+  getStorageList(): Task[] {
+    const list: string | null = localStorage.getItem('taskList') as string;
     return JSON.parse(list);
   }
 
-  load(date: moment.Moment) {
-    let list = this.getStorageList();
+  load(date: moment.Moment): Task[] {
+    const list = this.getStorageList();
 
-    let getList = list.filter((t: any) => {
+    const getList = list.filter((t: Task) => {
       return date >= t.startDay && date <= t.endDay;
     });
 
     return getList;
   }
 
-  create(task: Task) {
-    let list = this.getStorageList();
+  create(task: Task): void {
+    const list = this.getStorageList();
 
     localStorage.setItem('taskList', JSON.stringify([...list, task]));
   }
 
-  remove(task: Task) {
-    let list = this.getStorageList();
+  remove(task: Task): void {
+    const list = this.getStorageList();
 
-    let newList = list.filter((t: Task) => {
+    const newList = list.filter((t: Task) => {
       return t.id !== task.id;
     });
 
     localStorage.setItem('taskList', JSON.stringify(newList));
   }
 
-  edit(task: Task) {
-    let list = this.getStorageList();
+  edit(task: Task): void {
+    const list = this.getStorageList();
 
     const newList = list.map((item: Task) => {
       return item.id == task.id ? task : item;

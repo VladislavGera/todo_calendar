@@ -30,3 +30,12 @@ section {
   justify-content: space-between;
   width: 150px;
 }
+
+span {
+  color: blue;
+  cursor: pointer;
+}
+
+.type-active {
+  text-decoration: underline;
+}

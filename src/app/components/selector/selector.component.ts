@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { DateService } from '../shared/date.service';
+import { DateService } from '../../shared/services/date.service';
 
 @Component({
   selector: 'app-selector',
@@ -10,7 +10,7 @@ import { DateService } from '../shared/date.service';
 export class SelectorComponent {
   constructor(public dateService: DateService) {}
 
-  public go(dir: number) {
-    this.dateService.changeMonth(dir);
+  public go(dir: number): void {
+    this.dateService.changeCalendarType(dir);
   }
 }

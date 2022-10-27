@@ -2,7 +2,17 @@
   <header>
     Organizer:
     <strong>{{ dateService.date | async | moment: "DD.MM.YYYY" }} </strong>
+    <p>
+      Calendar type:
 
+      <span (click)="changeType('week')" [ngClass]="changeClass('week')">
+        week</span
+      >
+
+      <span (click)="changeType('month')" [ngClass]="changeClass('month')">
+        month</span
+      >
+    </p>
     <hr />
   </header>
   <main>

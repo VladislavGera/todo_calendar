@@ -3,35 +3,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { SelectorComponent } from './selector/selector.component';
-import { OranizerComponent } from './oranizer/oranizer.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { SelectorComponent } from './components/selector/selector.component';
+import { OranizerComponent } from './components/organizer/oranizer.component';
 
-import { MomentPipe } from './shared/moment.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialExampleModule } from '../../src/material.module';
-
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './components/core.component.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CalendarComponent,
-    SelectorComponent,
-    OranizerComponent,
-    MomentPipe
-  ],
-  imports: [
-    MaterialExampleModule,
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule
-  ],
+  declarations: [AppComponent],
+  imports: [CoreModule, BrowserAnimationsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

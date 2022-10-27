@@ -1,16 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TaskService, Task } from '../shared/task.service';
-import { DateService } from '../shared/date.service';
+import { TaskService, Task } from '../../shared/services/task.service';
+import { DateService } from '../../shared/services/date.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-oranizer',
-  templateUrl: './oranizer.component.html',
-  styleUrls: ['./oranizer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-organizer',
+  templateUrl: './organizer.component.html',
+  styleUrls: ['./organizer.component.scss'],
 })
-export class OranizerComponent implements OnInit {
+export class OranizerComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
   public date!: string;
   public tasks: Task[] = [];
@@ -37,7 +40,21 @@ export class OranizerComponent implements OnInit {
     });
   }
 
-  public submit() {
+  ngOnDestroy(): void {
+    this.dateService.date.unsubscribe();
+  }
+
+  public changeClass(type: string): string {
+    return this.dateService.typeChange == type ? 'type-active' : 'type';
+  }
+
+  public changeType(type: string): void {
+    this.dateService.dateSwitch(type);
+    const day = this.dateService.date.value;
+    this.dateService.changeDate(day);
+  }
+
+  public submit(): void {
     const { title, startDay, endDay, isCelebrity } = this.form.value;
 
     const date = this.dateService.date.value.format('YYYY-MM-DD');
@@ -59,7 +76,7 @@ export class OranizerComponent implements OnInit {
     this.form.reset();
   }
 
-  public remove(task: Task) {
+  public remove(task: Task): Task | void {
     this.taskService.remove(task);
 
     this.tasks = this.tasks.filter((t) => {
@@ -67,7 +84,7 @@ export class OranizerComponent implements OnInit {
     });
   }
 
-  public getEditFild(task: Task) {
+  public getEditFild(task: Task): void {
     this.isEdit = true;
 
     this.taskId = task.id;
@@ -80,7 +97,7 @@ export class OranizerComponent implements OnInit {
     });
   }
 
-  public edit() {
+  public edit(): void {
     const { title, startDay, endDay, isCelebrity } = this.form.value;
 
     const date = this.dateService.date.value.format('YYYY-MM-DD');

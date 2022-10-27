@@ -1,9 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import * as moment from 'moment';
-import { DateService } from '../shared/date.service';
+import { DateService } from '../../shared/services/date.service';
 
 interface Day {
-  value: moment.Moment;
+  value: moment.Moment ;
   active: boolean;
   disabled: boolean;
   selected: boolean;
@@ -17,20 +21,26 @@ interface Week {
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   constructor(private dateService: DateService) {}
 
   public calendar!: Week[];
+  public calendarType!: string | any ;
 
   ngOnInit(): void {
     this.dateService.date.subscribe(this.generate.bind(this));
   }
 
-  public generate(now: moment.Moment) {
-    const startDay = now.clone().startOf('month').startOf('week');
-    const endDay = now.clone().endOf('month').endOf('week');
+  ngOnDestroy(): void {
+    this.dateService.date.unsubscribe();
+  }
+
+  public generate(now: moment.Moment): void {
+    this.calendarType = this.dateService.typeChange;
+
+    const startDay = now.clone().startOf(this.calendarType).startOf('week');
+    const endDay = now.clone().endOf(this.calendarType).endOf('week');
 
     const date = startDay.clone().subtract(1, 'day');
 
@@ -58,7 +68,7 @@ export class CalendarComponent implements OnInit {
     this.calendar = calendar;
   }
 
-  public select(day: any) {
+  public select(day: moment.Moment): void {
     this.dateService.changeDate(day);
   }
 }
