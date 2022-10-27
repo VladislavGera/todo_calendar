@@ -1,7 +1,11 @@
 <p>
-  <i (click)="go(-1)"> < </i>
+  <i (click)="go(-1)">
+    <mat-icon aria-hidden="false" fontIcon="   arrow_back_ios"></mat-icon>
+  </i>
 
   <span> {{ dateService.date | async | moment }} </span>
 
-  <i (click)="go(1)"> > </i>
+  <i (click)="go(1)">
+    <mat-icon aria-hidden="false" fontIcon="arrow_forward_ios"></mat-icon>
+  </i>
 </p>

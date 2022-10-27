@@ -1,13 +1,9 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../../shared/services/date.service';
 
 interface Day {
-  value: moment.Moment ;
+  value: moment.Moment;
   active: boolean;
   disabled: boolean;
   selected: boolean;
@@ -26,14 +22,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(private dateService: DateService) {}
 
   public calendar!: Week[];
-  public calendarType!: string | any ;
+  public calendarType!: string | any;
+  public subscription: any;
 
   ngOnInit(): void {
-    this.dateService.date.subscribe(this.generate.bind(this));
+    this.subscription = this.dateService.date.subscribe(
+      this.generate.bind(this)
+    );
   }
 
   ngOnDestroy(): void {
-    this.dateService.date.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   public generate(now: moment.Moment): void {

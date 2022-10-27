@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskService, Task } from '../../shared/services/task.service';
 import { DateService } from '../../shared/services/date.service';
@@ -18,6 +14,7 @@ export class OranizerComponent implements OnInit, OnDestroy {
   public date!: string;
   public tasks: Task[] = [];
   public taskId!: string | undefined;
+  public subscription!: any;
   public isEdit: boolean = false;
 
   constructor(
@@ -26,7 +23,7 @@ export class OranizerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.dateService.date.subscribe(() => {
+    this.subscription = this.dateService.date.subscribe(() => {
       this.tasks = this.taskService.load(
         this.dateService.date.value.format('YYYY-MM-DD')
       );
@@ -41,7 +38,7 @@ export class OranizerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dateService.date.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   public changeClass(type: string): string {
@@ -76,7 +73,7 @@ export class OranizerComponent implements OnInit, OnDestroy {
     this.form.reset();
   }
 
-  public remove(task: Task): Task | void {
+  public remove(task: Task): void {
     this.taskService.remove(task);
 
     this.tasks = this.tasks.filter((t) => {
